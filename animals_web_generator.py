@@ -17,7 +17,6 @@ def write_animals_html(html_data, new_file_path, str_replace, data):
     """Replaces a given html string with data and stores the html under a new file."""
 
     new_data = html_data.replace(str_replace, data)
-    print(new_data)
     try:
         with open(new_file_path, "w") as new_file:
             new_file.write(new_data)
@@ -61,12 +60,19 @@ def show_animal(animal_data):
     data += '</ul>'
     return data
 
+def show_message(message):
+    """Generates an html message to show on the website."""
+    return f'<h2>{message}</h2>'
+
 def main():
     """ Main function asks the user for an animal for which to generate a website. """
 
     animal_name = input("Please enter an animal: ")
     data = data_fetcher.fetch_data(animal_name)
-    data = show_animal(data)
+    if not data:
+        data = show_message(f"The animal {animal_name} doesn't exist.")
+    else:
+        data = show_animal(data)
     try:
         html_data = load_html('animals_template.html')
         write_animals_html(html_data=html_data,
